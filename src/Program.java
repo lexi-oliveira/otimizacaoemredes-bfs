@@ -2,18 +2,46 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+class ArestaOuArco{
+	int verticeOrigem;
+	int verticeDestino;
+	int peso;
+	
+	ArestaOuArco(int verticeOrigem, int verticeDestino, int peso){
+		this.verticeOrigem = verticeOrigem;
+		this.verticeDestino = verticeDestino;
+		this.peso = peso;
+	}
+	
+	void imprimeArestaOuArco(){
+		System.out.println("Origem: " + verticeOrigem + ", Destino: " + verticeDestino + ", Peso: " + peso);
+	}
+}
+
 class Grafo{
 	int numVertices;
 	int numArestas;
 	ArrayList <List<Integer>> listaAdjacencias;
+	List<ArestaOuArco> arestasOuArcos;
 	
 	Grafo(int numVertices, int numArestas){ //construtor para iniciar a lista de adjacencia
 		this.numVertices = numVertices;
 		this.numArestas = numArestas;
+		arestasOuArcos = new ArrayList<>();
 		
 		listaAdjacencias = new ArrayList<>();
 		for(int i = 0; i < numVertices; i++) {
 			listaAdjacencias.add(new ArrayList<>());
+		}
+	}
+	
+	void addArestaOuArco(int origem, int destino, int peso) {
+		arestasOuArcos.add(new ArestaOuArco(origem, destino, peso));
+	}
+	
+	void imprimeArestasOuArcos() {
+		for(ArestaOuArco a : arestasOuArcos) {
+			a.imprimeArestaOuArco();
 		}
 	}
 }
@@ -24,25 +52,28 @@ public class Program {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.print("Digite o numero de arestas: ");
-		int numArestas = sc.nextInt();
-		System.out.println("Digite o numero de vertices: ");
-		int numVertices = sc.nextInt();
+		int n; // representa a quantidade de vertices do grafo
+		int m; // representa a quantidade de arestas ou arcos do grafo
+		int b; // indica se o grafo eh direcionado 1 - sim, 0 - nao
+		int i; // indice do vertice a partir do qual sera realizada a busca
 		
-		Grafo a = new Grafo(numVertices, numArestas);
+		n = sc.nextInt();
+		m = sc.nextInt();
+		b = sc.nextInt();
+		i = sc.nextInt();
 		
-		addVerticeAdjacente(a.listaAdjacencias, 0, 7);
-		addVerticeAdjacente(a.listaAdjacencias, 0, 2);
-		addVerticeAdjacente(a.listaAdjacencias, 0, 1);
-		addVerticeAdjacente(a.listaAdjacencias, 0, 9);
+		Grafo g = new Grafo(n, m);
 		
-		addVerticeAdjacente(a.listaAdjacencias, 1, 9);
-		addVerticeAdjacente(a.listaAdjacencias, 1, 2);
-		addVerticeAdjacente(a.listaAdjacencias, 1, 6);
-		addVerticeAdjacente(a.listaAdjacencias, 1, 5);
-		addVerticeAdjacente(a.listaAdjacencias, 1, 10);
+		for(int j=0; j<m; j++) {
+			int origem = sc.nextInt();
+			int destino = sc.nextInt();
+			int peso = sc.nextInt();
+			
+			g.addArestaOuArco(origem, destino, peso);
+			
+		}
 		
-		imprimeAdjacencias(a.listaAdjacencias);
+		g.imprimeArestasOuArcos();
 		
 		
 		sc.close();

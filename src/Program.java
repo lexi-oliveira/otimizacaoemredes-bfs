@@ -46,12 +46,49 @@ class Grafo{
 	}
 }
 
+class Fila{
+	List <Integer> fila;
+	
+	Fila(){
+		fila = new ArrayList<>();
+	}
+	
+	void addFila(int vertice) {
+		fila.add(vertice);
+	}
+	
+	void removeFila() {
+		fila.remove(0);
+	}
+	
+	void imprimeFila() {
+		System.out.println("Fila: ");
+		for(int i : fila) {
+			System.out.println(i);
+		}
+	}
+}
+
 
 public class Program {
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		
+		Fila f = new Fila();
+		
+		for(int i =0; i < 6; i++) {
+			f.addFila(sc.nextInt());
+		}
+		
+		f.imprimeFila();
+		
+		f.removeFila();
+		f.removeFila();
+		
+		f.imprimeFila();
+		
+		/*
 		int n; // representa a quantidade de vertices do grafo
 		int m; // representa a quantidade de arestas ou arcos do grafo
 		int b; // indica se o grafo eh direcionado 1 - sim, 0 - nao
@@ -63,6 +100,8 @@ public class Program {
 		i = sc.nextInt();
 		
 		Grafo g = new Grafo(n, m);
+		Fila fila = new Fila();
+		
 		
 		for(int j=0; j<m; j++) {
 			int origem = sc.nextInt();
@@ -73,8 +112,9 @@ public class Program {
 			
 		}
 		
-		g.imprimeArestasOuArcos();
+		//g.imprimeArestasOuArcos();
 		
+		*/
 		
 		sc.close();
 	}
@@ -108,6 +148,10 @@ public class Program {
 			v++;
 			System.out.println();
 		}
+	}
+	
+	static void buscaEmLargura(Grafo grafo, int vertice) {
+		
 	}
 
 }

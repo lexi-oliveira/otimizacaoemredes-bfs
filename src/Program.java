@@ -104,6 +104,10 @@ public class Program {
 			
 			g.addArestaOuArco(origem, destino, peso);
 			addVerticeAdjacente(g.listaAdjacencias, origem-1, destino);
+			if(b == 0) {
+				g.addArestaOuArco(origem, destino, peso);
+				addVerticeAdjacente(g.listaAdjacencias, destino-1, origem);
+			}
 			
 		}
 		
@@ -112,7 +116,7 @@ public class Program {
 		
 		imprimeAdjacencias(g.listaAdjacencias);
 		
-		buscaEmLargura(g, i);
+		buscaEmLargura(g, i, b);
 		
 		
 		
@@ -150,7 +154,7 @@ public class Program {
 		}
 	}
 	
-	static void buscaEmLargura(Grafo grafo, int vertice) {
+	static void buscaEmLargura(Grafo grafo, int vertice, int b) {
 		boolean[] verticesExplorados = new boolean[grafo.numVertices];
 		boolean[][] arestasOuArcosExplorados = new boolean[grafo.numVertices][grafo.numVertices];
 		List <Integer> ordemExploracao = new ArrayList<>();
@@ -171,13 +175,18 @@ public class Program {
 			for(int i=0; i < grafo.listaAdjacencias.get(vertice-1).size(); i++) {
 				if(!verticesExplorados[grafo.listaAdjacencias.get(vertice-1).get(i)-1]) {
 					arestasOuArcosExplorados[vertice-1][grafo.listaAdjacencias.get(vertice-1).get(i)-1] = true;
+					if(b == 0)
+						arestasOuArcosExplorados[grafo.listaAdjacencias.get(vertice-1).get(i)-1][vertice-1] = true;
 					fila.addFila(grafo.listaAdjacencias.get(vertice-1).get(i));
 					verticesExplorados[grafo.listaAdjacencias.get(vertice-1).get(i)-1] = true;
+					
 					ordemExploracao.add(grafo.listaAdjacencias.get(vertice-1).get(i));
 				}
 				else {
 					if(!arestasOuArcosExplorados[vertice-1][grafo.listaAdjacencias.get(vertice-1).get(i)-1]) {
 						arestasOuArcosExplorados[vertice-1][grafo.listaAdjacencias.get(vertice-1).get(i)-1] = true;
+						if(b == 0)
+							arestasOuArcosExplorados[grafo.listaAdjacencias.get(vertice-1).get(i)-1][vertice-1] = true;
 					}
 				}
 			}

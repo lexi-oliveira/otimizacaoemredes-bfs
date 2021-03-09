@@ -57,8 +57,10 @@ class Fila{
 		fila.add(vertice);
 	}
 	
-	void removeFila() {
+	int removeFila() {
+		int aux = fila.get(0);		
 		fila.remove(0);
+		return aux;
 	}
 	
 	void imprimeFila() {
@@ -66,6 +68,10 @@ class Fila{
 		for(int i : fila) {
 			System.out.println(i);
 		}
+	}
+	
+	boolean filaVazia() {
+		return fila.isEmpty();
 	}
 }
 
@@ -75,20 +81,8 @@ public class Program {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		
-		Fila f = new Fila();
 		
-		for(int i =0; i < 6; i++) {
-			f.addFila(sc.nextInt());
-		}
 		
-		f.imprimeFila();
-		
-		f.removeFila();
-		f.removeFila();
-		
-		f.imprimeFila();
-		
-		/*
 		int n; // representa a quantidade de vertices do grafo
 		int m; // representa a quantidade de arestas ou arcos do grafo
 		int b; // indica se o grafo eh direcionado 1 - sim, 0 - nao
@@ -109,12 +103,18 @@ public class Program {
 			int peso = sc.nextInt();
 			
 			g.addArestaOuArco(origem, destino, peso);
+			addVerticeAdjacente(g.listaAdjacencias, origem-1, destino);
 			
 		}
 		
 		//g.imprimeArestasOuArcos();
+		System.out.println();
 		
-		*/
+		imprimeAdjacencias(g.listaAdjacencias);
+		
+		buscaEmLargura(g, i);
+		
+		
 		
 		sc.close();
 	}
@@ -151,66 +151,41 @@ public class Program {
 	}
 	
 	static void buscaEmLargura(Grafo grafo, int vertice) {
+		boolean[] verticesExplorados = new boolean[grafo.numVertices];
+		boolean[][] arestasOuArcosExplorados = new boolean[grafo.numVertices][grafo.numVertices];
+		List <Integer> ordemExploracao = new ArrayList<>();
+		
+		
+		Fila fila = new Fila();
+		
+		verticesExplorados[vertice-1] = true; // marca o vertice inicial como explorado
+		
+		fila.addFila(vertice);
+		ordemExploracao.add(vertice);
+		
+		//System.out.println("TAMANHO DA LISTA 1: " + grafo.listaAdjacencias.get(vertice-1).size());
+		
+		while (!fila.filaVazia()) {
+			//System.out.println("VERTICE VISITADO: " + );
+			vertice = fila.removeFila();
+			for(int i=0; i < grafo.listaAdjacencias.get(vertice-1).size(); i++) {
+				if(!verticesExplorados[grafo.listaAdjacencias.get(vertice-1).get(i)-1]) {
+					arestasOuArcosExplorados[vertice-1][grafo.listaAdjacencias.get(vertice-1).get(i)-1] = true;
+					fila.addFila(grafo.listaAdjacencias.get(vertice-1).get(i));
+					verticesExplorados[grafo.listaAdjacencias.get(vertice-1).get(i)-1] = true;
+					ordemExploracao.add(grafo.listaAdjacencias.get(vertice-1).get(i));
+				}
+				else {
+					if(!arestasOuArcosExplorados[vertice-1][grafo.listaAdjacencias.get(vertice-1).get(i)-1]) {
+						arestasOuArcosExplorados[vertice-1][grafo.listaAdjacencias.get(vertice-1).get(i)-1] = true;
+					}
+				}
+			}
+		}
+		
+		for(int i : ordemExploracao)
+			System.out.print(i + " ");
 		
 	}
 
 }
-
-
-
-/*
-public class Program {
-
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		
-		Grafo a = new Grafo();
-		
-		System.out.print("Digite o numero de arestas: ");
-		a.numArestas = sc.nextInt();
-		System.out.println("Digite o numero de vertices: ");
-		a.numVertices = sc.nextInt();
-		
-		ArrayList <List<Integer>> listaAdjacencias = new ArrayList<>();
-		listaAdjacencias.add(new ArrayList<>());
-		
-		addVerticeAdjacente(listaAdjacencias, 0, 3);
-		addVerticeAdjacente(listaAdjacencias, 0, 1);
-		addVerticeAdjacente(listaAdjacencias, 0, 2);
-		addVerticeAdjacente(listaAdjacencias, 0, 7);
-		addVerticeAdjacente(listaAdjacencias, 0, 9);
-		
-		//listaAdjacencias.get(0).add(3);
-		//listaAdjacencias.get(0).add(1);
-		//listaAdjacencias.get(0).add(2);
-		//listaAdjacencias.get(0).add(7);
-		//listaAdjacencias.get(0).add(0, 4); //adiciona um novo elemento na posicao estabelecida
-		
-		
-		listaAdjacencias.add(new ArrayList<>());
-		//listaAdjacencias.get(1).add(9);
-		//listaAdjacencias.get(1).add(2);
-		//listaAdjacencias.get(1).add(6);
-		//listaAdjacencias.get(1).add(5);
-		addVerticeAdjacente(listaAdjacencias, 1, 9);
-		addVerticeAdjacente(listaAdjacencias, 1, 2);
-		addVerticeAdjacente(listaAdjacencias, 1, 6);
-		addVerticeAdjacente(listaAdjacencias, 1, 5);
-		addVerticeAdjacente(listaAdjacencias, 1, 10);
-		
-		
-		listaAdjacencias.add(new ArrayList<>());
-		int r = 1;
-		for(List<Integer> l: listaAdjacencias) {
-			for(int i=0; i<l.size(); i++) {
-				System.out.println("Lista " + r + ": " + l.get(i));
-			}
-			r++;
-		}
-		
-		
-		sc.close();
-	}
-*/
-
-
